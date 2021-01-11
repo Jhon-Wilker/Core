@@ -1,5 +1,5 @@
 {% extends "tasks/layouts/layout.html" %}
-{% load static %}
+
 {% block content %}
       <!-- Content Wrapper. Contains page content -->
       
@@ -14,16 +14,10 @@
               <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-info">
-                 
-                  <div class="inner" >
-                    
-                    <h4>Pontuação </h4>
-                    
-                    <h3>{{pontuacao}}</h3> 
-                  
-
+                  <div class="inner">
+                    <h4>Total de Chamadas</h4>
+                    <h3>{{total_chamadas}}</h3>
                   </div>
-                  
                   <div class="icon">
                     <i class="ion ion-bag"></i>
                   </div>
@@ -35,7 +29,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                   <div class="inner">
-                    <h4>Receita Total Empresas {{list_size}}</h4>
+                    <h4>Receita Total Empresas</h4>
                     
                     <h3>{{receita_total}}</h3> 
                   </div>
@@ -51,8 +45,8 @@
                 <div class="small-box bg-warning">
                   <div class="inner">
                     
-                    <h4>Total Chamados</h4>
-                    <h3>{{total_tickets}}</h3>
+                    <h4>Total Pacotes</h4>
+                    <h3>{{total_pacotes}}</h3>
     
                     
                   </div>
@@ -65,17 +59,17 @@
               <!-- ./col -->
               <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box {%if total_chamados < 10000000 %}bg-danger{% else %}bg-warning{%endif%}">
+                <div class="small-box {%if total_pacotes < 10000000 %}bg-danger{% else %}bg-warning{%endif%}">
                   <div class="inner">
                     <h4>Tickets Abertos</h4>
-                    <h3>{{tickets_user}}</h3>
+                    <h3>65</h3>
     
                     
                   </div>
                   <div class="icon">
                     <i class="ion ion-pie-graph"></i>
                   </div>
-                  <a href="{% url 'tk_rel' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                  <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
               <!-- ./col -->
@@ -111,7 +105,6 @@
                           <th>CNPJ</th>
                           <th>PACOTE</th>
                           <th>VALOR</th>
-                          <th>EXCEDENTE</th>
                         </tr>
                         {% for sub_items in my_list %}
                         
@@ -142,32 +135,56 @@
               <section class="col-lg-5 connectedSortable">
     
                 <!-- Map card -->
-                <div class="card bg-gradient-primary">
-                  <div class="card-header border-0">
-                    <h3 class="card-title">
-                      <i class="fas fa-map-marker-alt mr-1"></i>
-                      Visitors
-                    </h3>
+                
+                  <!-- Custom tabs (Charts with tabs)-->
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        Chamadas
+                      </h3>
+                    </div><!-- /.card-header -->
+                    <div class="card-body" style="display: flex; justify-content: space-between ;">
+                      <div class="tab-content p-0">
+                        <table style="width:50%">
+                          <tr>
+                            <th>EMPRESA</th>
+                          </tr>
+                           
+                          {% for sub_nomes in empresa_nomes %}
+                          <tr>
+                          <td>{{sub_nomes}}</td>
+                          </tr>
+
+                          {% endfor %}
+                          
+                        </table>
+                      </div>
+                      
+                      <div class="tab-content p-0">
+                        <table style="width:50%">
+                          <tr>
+                            <th>CHAMADAS</th>
+                          </tr>
+                           
+                          {% for sub_chamadas in empresa_quantidade_chamadas %}
+                          <tr>
+                          <td>{{sub_chamadas}}</td>
+                          </tr>
+                          {% endfor %}
+                          
+                        </table>
+                      </div>
+                    </div><!-- /.card-body -->
+                  </div>
+              </section>
                     <!-- card tools -->
-                    <div class="card-tools">
-                      <button type="button"
-                              class="btn btn-primary btn-sm daterange"
-                              data-toggle="tooltip"
-                              title="Date range">
-                        <i class="far fa-calendar-alt"></i>
-                      </button>
-                      <button type="button"
-                              class="btn btn-primary btn-sm"
-                              data-card-widget="collapse"
-                              data-toggle="tooltip"
-                              title="Collapse">
-                        <i class="fas fa-minus"></i>
-                      </button>
-                    </div>
+
                     <!-- /.card-tools -->
+              <section class="col-lg-12 connectedSortable">
                   </div>
                   <div class="card-body">
-                    
+                    <div id="world-map" style="height: 20px; width: 100%;"></div> 
                     <div class="card card-primary">
                       <div class="card-header">
                         <h3 class="card-title">Area Chart</h3>
@@ -179,7 +196,9 @@
                         </div>
                       </div>
                       <div class="card-body">
-                        
+                        <div class="chart">
+                          <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
                       </div>
                       <!-- /.card-body -->
                     </div>
@@ -201,55 +220,24 @@
                         <div id="sparkline-3"></div>
                         <div class="text-white">Sales</div>
                       </div>
-                      <!-- ./col -->
-                    </div>
-                    <!-- /.row -->
-                  </div>
+                  <!-- ./col -->
                 </div>
+                <!-- /.row -->
+              </div>
+            </div>
                 <!-- /.card -->
     
                 <!-- solid sales graph -->
                 
                 <!-- /.card -->
     
-               
               </section>
               <!-- right col -->
             </div>
             <!-- /.row (main row) -->
           </div><!-- /.container-fluid -->
-          <div class="position-relative mb-4"> 
-            <canvas id="areaChart" height="200"></canvas>
-          </div>
-          <div id="app3">
-            <la-cartesian :width="900" :height="200" :data="values">
-                <la-line prop="pv"></la-line>
-                <la-y-axis></la-y-axis>
-                <la-x-axis prop="name"></la-x-axis>
-                <la-tooltip></la-tooltip>
-          </la-cartesian>
-        </div>
-        
-        <script src="//unpkg.com/vue"></script>
-        <script src="//unpkg.com/laue"></script>
-        <script>
-            new Vue({
-                el: '#app3',
-                data: () => ({
-                    values: [
-                      {% for sub_items in my_list %}
-                        { name: '{{sub_items.name}}', pv: '{{sub_items.contract_pack}}' },
-                      {% endfor %}
-                    ],
-                    
-                })
-            })
-        </script>
         </section>
         <!-- /.content -->
-        
-     
-        
-       
+      
+      
 {% endblock content %}
-

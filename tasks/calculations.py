@@ -5,12 +5,15 @@ class Calculations():
         count = len(mylist_items)
         return count
     
-    def total_chamados(self, mylist_items):
+    def total_pacotes(self, mylist_items):
         count = 0
         for itens in mylist_items:
             count += itens.contract_pack
         return count
     
+    def total_chamadas(self, mylist_items):
+        return sum(mylist_items.values())
+
     def total_valor(self,mylist_items):
         count = 0
         for itens in mylist_items:
